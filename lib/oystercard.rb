@@ -17,6 +17,7 @@ class Oystercard
   end
 
   def touch_in
+    fail 'Insufficent Funds' if @balance < 1
     @in_use = true
   end
 

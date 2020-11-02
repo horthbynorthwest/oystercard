@@ -37,25 +37,22 @@ describe Oystercard do
       expect(subject).not_to be_in_journey
     end
     it 'can touch in' do
+      subject.top_up(5)
       subject.touch_in
       expect(subject).to be_in_journey
     end
     it 'can touch out' do
+      subject.top_up(5)
       subject.touch_in #making in journey = true
       subject.touch_out #making in journey = false
       expect(subject).not_to be_in_journey
     end
   end
 
-  #describe '#touch_out' do
-  #  it 'responds' do
-  #    expect(subject).to respond_to(:touch_out)
-  #  end
-  end
+  describe '#touch_in' do
+    it 'raises an error if less than 1' do
+      expect { subject.touch_in}.to raise_error 'Insufficent Funds'
+    end
 
-  #describe '#in_journey?' do
-  #  it 'responds' do
-  #    expect(subject).to respond_to(:in_journey?)
-  #  end
-  #end
-#end
+  end
+end
