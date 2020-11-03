@@ -2,6 +2,7 @@ require 'oystercard'
 
 describe Oystercard do
   let(:station){ double :station }
+  let(:another_station){ double :station }
 
   it 'it has a balance of zero' do
     expect(subject.balance).to eq 0
@@ -46,7 +47,7 @@ describe Oystercard do
     it 'can touch out' do
       subject.top_up(5) # adding value so no error raised. see line 54
       subject.touch_in(station) #making in journey = true
-      subject.touch_out #making in journey = false
+      subject.touch_out(another_station) #making in journey = false
       expect(subject).not_to be_in_journey
     end
   end
@@ -60,7 +61,7 @@ describe Oystercard do
       it 'on touch out the user is charged the minimum fair' do
         subject.top_up(5)
         subject.touch_in(station)
-        expect { subject.touch_out }.to change{ subject.balance }.by -Oystercard::MINIMUM_FARE
+        expect { subject.touch_out(another_station) }.to change{ subject.balance }.by -Oystercard::MINIMUM_FARE
       end
     end
   describe '#entry staion' do
@@ -71,5 +72,21 @@ describe Oystercard do
       expect(subject.entry_station).to eq station
     end
   end
+  describe '#journey history' do
+    it 'initializes an empty array' do
+      expect(subject.journey_history).to eq []
+    end
+    it 'remember entry station' do
+      subject.top_up(5)
+      subject.touch_in(station)
+      expect(subject.journey_history[0][:start]).to eq station
+    end
+    it 'remember exit station' do
+      subject.top_up(5)
+      subject.touch_in(station)
+      subject.touch_out(another_station)
+      expect(subject.journey_history[0][:finish]).to eq another_station
+    end
   end
+end
 end
