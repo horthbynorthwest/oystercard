@@ -27,6 +27,7 @@ class Oystercard
 
   def in_journey?
     !!@entry_station
+    # above is the equivalent of != nil
   end
 
   private

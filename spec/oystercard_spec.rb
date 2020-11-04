@@ -58,7 +58,7 @@ describe Oystercard do
     end
 
     describe '#charging for journey' do
-      it 'on touch out the user is charged the minimum fair' do
+      it 'on touch out the user is charged the minimum fare' do
         subject.top_up(5)
         subject.touch_in(station)
         expect { subject.touch_out(another_station) }.to change{ subject.balance }.by -Oystercard::MINIMUM_FARE
